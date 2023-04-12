@@ -6,7 +6,7 @@ oc -n keycloak create secret tls cluster-cert --cert=./tls.crt --key=./tls.key
 ./build-fips-keycloak-docker-image.sh
 docker build -t quay.io/mpaulgreen/keycloak-fips-pod:21.0.2 .
 docker push quay.io/mpaulgreen/keycloak-fips-pod:21.0.2
-oc apply -f keycloak.yaml // health probes failing
+oc apply -f keycloak.yaml 
 ```
 
 - Issues

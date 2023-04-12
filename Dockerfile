@@ -3,6 +3,7 @@ FROM quay.io/keycloak/keycloak:21.0.2 as builder
 ADD files /tmp/files/
 
 ENV KC_HEALTH_ENABLED=true
+ENV KC_DB=postgres
 
 WORKDIR /opt/keycloak
 RUN cp /tmp/files/*.jar /opt/keycloak/providers/

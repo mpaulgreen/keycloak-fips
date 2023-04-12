@@ -6,6 +6,21 @@ metadata:
   name: example-keycloak
   namespace: keycloak
 spec:
+  db:
+    usernameSecret:
+      key: username
+      name: db-secret
+    passwordSecret:
+      key: password
+      name: db-secret
+    port: 5432
+    vendor: postgres
+    host: postgresql
+    poolInitialSize: 2
+    poolMaxSize: 3
+    url: 'jdbc:postgresql://postgresql.keycloak.svc.cluster.local:5432/keycloak'
+    poolMinSize: 2
+    database: keycloak
   additionalOptions:
     - name: health-enabled
       value: 'false'
@@ -18,3 +33,6 @@ spec:
     tlsSecret: cluster-cert
   image: 'quay.io/mpaulgreen/keycloak-fips-pod:21.0.2'
   instances: 1
+  transaction:
+    xaEnabled: false
+  

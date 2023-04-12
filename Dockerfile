@@ -6,6 +6,7 @@ WORKDIR /opt/keycloak
 RUN cp /tmp/files/*.jar /opt/keycloak/providers/
 RUN cp /tmp/files/keycloak-fips.keystore.* /opt/keycloak/bin/
 # RUN cp /tmp/files/tls.* /opt/keycloak/bin
+RUN cp /tmp/files/keycloak.conf /opt/keycloak/conf/
 
 RUN /opt/keycloak/bin/kc.sh show-config
 

@@ -52,7 +52,7 @@ cp $MAVEN_REPO_HOME/org/bouncycastle/bcpkix-fips/$BCPKIXFIPS_VERSION/bcpkix-fips
 cp $KEYCLOAK_SOURCES/testsuite/integration-arquillian/servers/auth-server/common/fips/$KEYSTORE_FILE ./files/
 
 # Running sudo for incomplete mac config
-sudo podman build . -t quay.io/mpaulgreen/keycloak-fips-pod:21.0.2
+# sudo podman build . -t quay.io/mpaulgreen/keycloak-fips-pod:21.0.2
 
 # Delete temporary files used during build of docker image
-rm -rf files
+# rm -rf files

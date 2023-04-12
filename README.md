@@ -8,6 +8,3 @@ docker build -t quay.io/mpaulgreen/keycloak-fips-pod:21.0.2 .
 docker push quay.io/mpaulgreen/keycloak-fips-pod:21.0.2
 oc apply -f keycloak.yaml 
 ```
-
-- Issues
-https://github.com/keycloak/keycloak/issues/19654

@@ -31,6 +31,8 @@ spec:
     hostname: fipskeycloak.apps.asaro.az-env1.appeng.rhecoeng.com
   http:
     tlsSecret: cluster-cert
+    httpPort: 8080
+    httpsPort: 8443
   image: 'quay.io/mpaulgreen/keycloak-fips-pod:21.0.2'
   instances: 1
   transaction:

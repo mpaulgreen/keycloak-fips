@@ -2,4 +2,3 @@
 secrets/
 test-quarkus-client/
 quarkus-client/
-tls/

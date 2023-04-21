@@ -1,3 +1,5 @@
+# THIS SETUP HAS NOT BEEN TESTED ON FIPS ENABLED OPENSHIFT
+
 # Setup FIPS with keycloak operator
 ```
 oc get secret -n openshift-ingress  router-certs-default -o go-template='{{index .data "tls.crt"}}' | base64 -d > tls.crt

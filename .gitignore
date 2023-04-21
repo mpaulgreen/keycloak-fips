@@ -2,3 +2,5 @@
 secrets/
 test-quarkus-client/
 quarkus-client/
+user-federation/
+custom-required-action/

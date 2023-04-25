@@ -28,7 +28,7 @@ spec:
     enabled:
       - fips
   hostname:
-    hostname: fipskeycloak.apps.asaro.az-env1.appeng.rhecoeng.com
+    hostname: fipskeycloak.apps.mpocp.az-env1.appeng.rhecoeng.com
   http:
     tlsSecret: cluster-cert
     httpPort: 8080

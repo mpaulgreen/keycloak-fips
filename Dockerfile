@@ -1,4 +1,4 @@
-FROM quay.io/keycloak/keycloak:21.0.2 as builder
+FROM quay.io/keycloak/keycloak:nightly as builder
 
 ADD files /tmp/files/
 
@@ -15,7 +15,7 @@ RUN /opt/keycloak/bin/kc.sh show-config
 
 RUN /opt/keycloak/bin/kc.sh build
 
-FROM quay.io/keycloak/keycloak:21.0.2
+FROM quay.io/keycloak/keycloak:nightly
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
 
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]

@@ -265,8 +265,8 @@
                 "impersonation",
                 "manage-events",
                 "create-client",
-                "view-clients",
                 "query-realms",
+                "view-clients",
                 "view-authorization",
                 "manage-users",
                 "query-clients",
@@ -402,7 +402,39 @@
       ]
     }
   },
-  "groups": [],
+  "groups": [
+    {
+      "id": "e2e67e04-50b5-4d55-90eb-ceea13912710",
+      "name": "Red Hat",
+      "path": "/Red Hat",
+      "attributes": {},
+      "realmRoles": [],
+      "clientRoles": {},
+      "subGroups": []
+    },
+    {
+      "id": "8772f740-53fe-4502-8ea3-4db794b515f2",
+      "name": "g1",
+      "path": "/g1",
+      "attributes": {
+        "x-approved": [
+          "1"
+        ]
+      },
+      "realmRoles": [],
+      "clientRoles": {},
+      "subGroups": []
+    },
+    {
+      "id": "d768aa59-e801-46fa-b559-5951d25b25a3",
+      "name": "g2",
+      "path": "/g2",
+      "attributes": {},
+      "realmRoles": [],
+      "clientRoles": {},
+      "subGroups": []
+    }
+  ],
   "defaultRole": {
     "id": "66e9ba43-e6d4-4753-a5f5-ed615b7a7283",
     "name": "default-roles-mriganka",
@@ -423,8 +455,8 @@
   "otpPolicyCodeReusable": false,
   "otpSupportedApplications": [
     "totpAppMicrosoftAuthenticatorName",
-    "totpAppFreeOTPName",
-    "totpAppGoogleName"
+    "totpAppGoogleName",
+    "totpAppFreeOTPName"
   ],
   "webAuthnPolicyRpEntityName": "keycloak",
   "webAuthnPolicySignatureAlgorithms": [
@@ -500,6 +532,24 @@
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": false,
       "nodeReRegistrationTimeout": 0,
+      "protocolMappers": [
+        {
+          "id": "c5a2ff7c-ddf2-4c39-becd-c846e3dd7692",
+          "name": "Red Hat Org",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "aggregate.attrs": "false",
+            "userinfo.token.claim": "true",
+            "multivalued": "false",
+            "user.attribute": "Org",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "org_id"
+          }
+        }
+      ],
       "defaultClientScopes": [
         "web-origins",
         "acr",
@@ -589,7 +639,9 @@
       "publicClient": true,
       "frontchannelLogout": false,
       "protocol": "openid-connect",
-      "attributes": {},
+      "attributes": {
+        "post.logout.redirect.uris": "+"
+      },
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": false,
       "nodeReRegistrationTimeout": 0,
@@ -627,7 +679,9 @@
       "publicClient": false,
       "frontchannelLogout": false,
       "protocol": "openid-connect",
-      "attributes": {},
+      "attributes": {
+        "post.logout.redirect.uris": "+"
+      },
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": false,
       "nodeReRegistrationTimeout": 0,
@@ -665,7 +719,9 @@
       "publicClient": false,
       "frontchannelLogout": false,
       "protocol": "openid-connect",
-      "attributes": {},
+      "attributes": {
+        "post.logout.redirect.uris": "+"
+      },
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": false,
       "nodeReRegistrationTimeout": 0,
@@ -834,7 +890,8 @@
           "consentRequired": false,
           "config": {
             "id.token.claim": "true",
-            "access.token.claim": "true"
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true"
           }
         }
       ]
@@ -867,6 +924,7 @@
           "consentRequired": false,
           "config": {
             "multivalued": "true",
+            "userinfo.token.claim": "true",
             "user.attribute": "foo",
             "id.token.claim": "true",
             "access.token.claim": "true",
@@ -1301,14 +1359,30 @@
       "linkOnly": false,
       "firstBrokerLoginFlowAlias": "first broker login",
       "config": {
+        "hideOnLoginPage": "false",
         "offlineAccess": "false",
+        "acceptsPromptNoneForwardFromClient": "false",
+        "clientId": "536618027487-30jhmketa296hcd39sp7ghcd397toiu1.apps.googleusercontent.com",
+        "disableUserInfo": "false",
+        "syncMode": "IMPORT",
         "userIp": "false",
-        "clientSecret": "**********",
-        "clientId": "536618027487-30jhmketa296hcd39sp7ghcd397toiu1.apps.googleusercontent.com"
+        "clientSecret": "**********"
       }
     }
   ],
-  "identityProviderMappers": [],
+  "identityProviderMappers": [
+    {
+      "id": "d02962bf-2859-4e0a-a993-5e73e81e00bb",
+      "name": "google-mapper",
+      "identityProviderAlias": "google",
+      "identityProviderMapper": "hardcoded-attribute-idp-mapper",
+      "config": {
+        "attribute.value": "1",
+        "syncMode": "IMPORT",
+        "attribute": "x-approved"
+      }
+    }
+  ],
   "components": {
     "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy": [
       {
@@ -1339,14 +1413,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "oidc-usermodel-attribute-mapper",
-            "oidc-full-name-mapper",
-            "oidc-usermodel-property-mapper",
             "saml-user-property-mapper",
+            "saml-user-attribute-mapper",
+            "oidc-usermodel-attribute-mapper",
+            "oidc-usermodel-property-mapper",
             "oidc-sha256-pairwise-sub-mapper",
             "saml-role-list-mapper",
             "oidc-address-mapper",
-            "saml-user-attribute-mapper"
+            "oidc-full-name-mapper"
           ]
         }
       },
@@ -1405,14 +1479,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "saml-user-attribute-mapper",
-            "oidc-usermodel-attribute-mapper",
-            "oidc-full-name-mapper",
-            "saml-role-list-mapper",
             "oidc-usermodel-property-mapper",
-            "oidc-address-mapper",
+            "saml-user-attribute-mapper",
+            "oidc-sha256-pairwise-sub-mapper",
+            "saml-role-list-mapper",
             "saml-user-property-mapper",
-            "oidc-sha256-pairwise-sub-mapper"
+            "oidc-address-mapper",
+            "oidc-full-name-mapper",
+            "oidc-usermodel-attribute-mapper"
           ]
         }
       }
@@ -2248,8 +2322,8 @@
     "cibaExpiresIn": "120",
     "cibaAuthRequestedUserHint": "login_hint",
     "oauth2DeviceCodeLifespan": "600",
-    "oauth2DevicePollingInterval": "5",
     "clientOfflineSessionMaxLifespan": "0",
+    "oauth2DevicePollingInterval": "5",
     "clientSessionIdleTimeout": "0",
     "parRequestUriLifespan": "60",
     "clientSessionMaxLifespan": "0",
@@ -2257,7 +2331,7 @@
     "cibaInterval": "5",
     "realmReusableOtpCode": "false"
   },
-  "keycloakVersion": "21.0.2",
+  "keycloakVersion": "999.0.0-SNAPSHOT",
   "userManagedAccessAllowed": false,
   "clientProfiles": {
     "profiles": []

@@ -1395,7 +1395,7 @@
   "identityProviders": [
     {
       "alias": "google",
-      "internalId": "a9921549-1af4-4279-9707-3b75c4292f9a",
+      "internalId": "b6870979-937c-4022-9656-5b5cca54d2c1",
       "providerId": "google",
       "enabled": true,
       "updateProfileFirstLoginMode": "on",
@@ -1405,6 +1405,7 @@
       "authenticateByDefault": false,
       "linkOnly": false,
       "firstBrokerLoginFlowAlias": "first broker login",
+      "postBrokerLoginFlowAlias": "first broker post login",
       "config": {
         "offlineAccess": "false",
         "hideOnLoginPage": "false",
@@ -1419,13 +1420,13 @@
   ],
   "identityProviderMappers": [
     {
-      "id": "39af03bd-939a-4021-a25a-f0a78d67887c",
+      "id": "6ee8fc6c-6f9d-486b-85e1-68f1e781434a",
       "name": "google-mapper",
       "identityProviderAlias": "google",
       "identityProviderMapper": "hardcoded-attribute-idp-mapper",
       "config": {
+        "syncMode": "INHERIT",
         "attribute.value": "1",
-        "syncMode": "IMPORT",
         "attribute": "x-approved"
       }
     }
@@ -1689,6 +1690,60 @@
       ]
     },
     {
+      "id": "99690c1b-a727-4cdc-ba8e-d468136a8f93",
+      "alias": "Condition - User is not approved",
+      "description": "",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticatorConfig": "userisNotApproved",
+          "authenticator": "conditional-user-attribute",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 1,
+          "autheticatorFlow": false,
+          "userSetupAllowed": false
+        },
+        {
+          "authenticator": "deny-access-authenticator",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 2,
+          "autheticatorFlow": false,
+          "userSetupAllowed": false
+        }
+      ]
+    },
+    {
+      "id": "1592e305-f480-46e4-a371-c042162a9c83",
+      "alias": "Conditional-User Is Approved",
+      "description": "",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticatorConfig": "userIsApproved",
+          "authenticator": "conditional-user-attribute",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 1,
+          "autheticatorFlow": false,
+          "userSetupAllowed": false
+        },
+        {
+          "authenticator": "allow-access-authenticator",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 2,
+          "autheticatorFlow": false,
+          "userSetupAllowed": false
+        }
+      ]
+    },
+    {
       "id": "bf29bd87-d0dc-47fc-b131-fe3c78debcad",
       "alias": "Direct Grant - Conditional OTP",
       "description": "Flow to determine if the OTP is required for the authentication",
@@ -1869,6 +1924,102 @@
       ]
     },
     {
+      "id": "c24ed548-437e-4bab-9f95-3a5330375fd9",
+      "alias": "Test first broker login",
+      "description": "Actions taken after first broker login with identity provider account, which is not yet linked to any Keycloak account",
+      "providerId": "basic-flow",
+      "topLevel": true,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticatorFlow": true,
+          "requirement": "REQUIRED",
+          "priority": 20,
+          "autheticatorFlow": true,
+          "flowAlias": "first broker post login flow",
+          "userSetupAllowed": false
+        }
+      ]
+    },
+    {
+      "id": "d79ae3b5-c32d-4e7b-8b4f-330b3293a99d",
+      "alias": "Test first broker login Account verification options",
+      "description": "Method with which to verity the existing account",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticator": "idp-email-verification",
+          "authenticatorFlow": false,
+          "requirement": "ALTERNATIVE",
+          "priority": 10,
+          "autheticatorFlow": false,
+          "userSetupAllowed": false
+        },
+        {
+          "authenticatorFlow": true,
+          "requirement": "ALTERNATIVE",
+          "priority": 20,
+          "autheticatorFlow": true,
+          "flowAlias": "Test first broker login Verify Existing Account by Re-authentication",
+          "userSetupAllowed": false
+        }
+      ]
+    },
+    {
+      "id": "5796da40-4bf0-4e8d-be7f-03ab176c7922",
+      "alias": "Test first broker login First broker login - Conditional OTP",
+      "description": "Flow to determine if the OTP is required for the authentication",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticator": "conditional-user-configured",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 10,
+          "autheticatorFlow": false,
+          "userSetupAllowed": false
+        },
+        {
+          "authenticator": "auth-otp-form",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 20,
+          "autheticatorFlow": false,
+          "userSetupAllowed": false
+        }
+      ]
+    },
+    {
+      "id": "e838b052-863d-41e5-80ea-992b05f5a64f",
+      "alias": "Test first broker login Verify Existing Account by Re-authentication",
+      "description": "Reauthentication of existing account",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticator": "idp-username-password-form",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 10,
+          "autheticatorFlow": false,
+          "userSetupAllowed": false
+        },
+        {
+          "authenticatorFlow": true,
+          "requirement": "CONDITIONAL",
+          "priority": 20,
+          "autheticatorFlow": true,
+          "flowAlias": "Test first broker login First broker login - Conditional OTP",
+          "userSetupAllowed": false
+        }
+      ]
+    },
+    {
       "id": "c6128cca-5436-4dea-9fdc-ef6bd73e3188",
       "alias": "User creation or linking",
       "description": "Flow for the existing/non-existing user alternatives",
@@ -1923,7 +2074,7 @@
         {
           "authenticator": "auth-otp-form",
           "authenticatorFlow": false,
-          "requirement": "REQUIRED",
+          "requirement": "DISABLED",
           "priority": 2,
           "autheticatorFlow": false,
           "userSetupAllowed": false
@@ -2147,6 +2298,130 @@
       ]
     },
     {
+      "id": "128dc66b-bc8a-4d46-a276-2597c5ac81fc",
+      "alias": "first broker post login",
+      "description": "Actions taken after first broker login with identity provider account, which is not yet linked to any Keycloak account",
+      "providerId": "basic-flow",
+      "topLevel": true,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticatorFlow": true,
+          "requirement": "REQUIRED",
+          "priority": 20,
+          "autheticatorFlow": true,
+          "flowAlias": "first broker post login first broker post login flow",
+          "userSetupAllowed": false
+        }
+      ]
+    },
+    {
+      "id": "4b8db38f-5c4c-485f-af36-b5522215b5f8",
+      "alias": "first broker post login Condition - User is not approved",
+      "description": "",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticatorConfig": "userisNotApproved",
+          "authenticator": "conditional-user-attribute",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 1,
+          "autheticatorFlow": false,
+          "userSetupAllowed": false
+        },
+        {
+          "authenticator": "deny-access-authenticator",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 2,
+          "autheticatorFlow": false,
+          "userSetupAllowed": false
+        }
+      ]
+    },
+    {
+      "id": "b8b9e403-983e-4ab0-913c-1ebfab0a80e7",
+      "alias": "first broker post login Conditional-User Is Approved",
+      "description": "",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticatorConfig": "userIsApproved",
+          "authenticator": "conditional-user-attribute",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 1,
+          "autheticatorFlow": false,
+          "userSetupAllowed": false
+        },
+        {
+          "authenticator": "allow-access-authenticator",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 2,
+          "autheticatorFlow": false,
+          "userSetupAllowed": false
+        }
+      ]
+    },
+    {
+      "id": "628e5ae5-98d6-4649-9b92-5fea8e6eecc7",
+      "alias": "first broker post login first broker post login flow",
+      "description": "Flow for the existing/non-existing user alternatives",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticatorFlow": true,
+          "requirement": "CONDITIONAL",
+          "priority": 20,
+          "autheticatorFlow": true,
+          "flowAlias": "first broker post login Conditional-User Is Approved",
+          "userSetupAllowed": false
+        },
+        {
+          "authenticatorFlow": true,
+          "requirement": "CONDITIONAL",
+          "priority": 21,
+          "autheticatorFlow": true,
+          "flowAlias": "first broker post login Condition - User is not approved",
+          "userSetupAllowed": false
+        }
+      ]
+    },
+    {
+      "id": "2362a295-26ab-4e91-84ae-dc72fddeda5a",
+      "alias": "first broker post login flow",
+      "description": "Flow for the existing/non-existing user alternatives",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticatorFlow": true,
+          "requirement": "CONDITIONAL",
+          "priority": 20,
+          "autheticatorFlow": true,
+          "flowAlias": "Conditional-User Is Approved",
+          "userSetupAllowed": false
+        },
+        {
+          "authenticatorFlow": true,
+          "requirement": "CONDITIONAL",
+          "priority": 21,
+          "autheticatorFlow": true,
+          "flowAlias": "Condition - User is not approved",
+          "userSetupAllowed": false
+        }
+      ]
+    },
+    {
       "id": "7153ab03-291d-483e-892a-13731fbc7f07",
       "alias": "forms",
       "description": "Username, password, otp and other auth forms.",
@@ -2336,6 +2611,15 @@
       }
     },
     {
+      "id": "6c8537fe-0f32-40a6-9422-aa90c512b8e5",
+      "alias": "userIsApproved",
+      "config": {
+        "attribute_expected_value": "1",
+        "not": "false",
+        "attribute_name": "x-approved"
+      }
+    },
+    {
       "id": "db42b645-0f97-45cf-9d59-2589202e2858",
       "alias": "userIsApproved",
       "config": {
@@ -2355,6 +2639,15 @@
     },
     {
       "id": "50bdad6e-4716-4b4e-aacb-74c1f039c016",
+      "alias": "userisNotApproved",
+      "config": {
+        "attribute_expected_value": "1",
+        "not": "true",
+        "attribute_name": "x-approved"
+      }
+    },
+    {
+      "id": "d73ea25e-c9f2-4246-8975-523fec6374e3",
       "alias": "userisNotApproved",
       "config": {
         "attribute_expected_value": "1",
